@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Eingabe für ein neues Starter-Ticket")
+@Schema(description = "Eingabe für ein neues Ticket")
 class CreateTicketRequest {
 
     @NotBlank
@@ -17,6 +17,6 @@ class CreateTicketRequest {
     private String title;
 
     @NotBlank
-    @Schema(description = "Ticketstatus im Starterprojekt", example = "open")
+    @Schema(description = "Ticketstatus", example = "open")
     private String status;
 }

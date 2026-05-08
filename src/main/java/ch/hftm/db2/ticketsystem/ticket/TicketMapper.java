@@ -1,20 +1,14 @@
 package ch.hftm.db2.ticketsystem.ticket;
 
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Component
-class TicketMapper {
+@Mapper(componentModel = "spring")
+interface TicketMapper {
 
-    TicketResponse toResponse(TicketEntity entity) {
-        return new TicketResponse(
-                entity.getId(),
-                entity.getTitle(),
-                entity.getStatus(),
-                entity.getCreatedAt()
-        );
-    }
+    TicketResponse toResponse(TicketEntity entity);
 
-    TicketEntity toEntity(CreateTicketRequest request) {
-        return new TicketEntity(request.getTitle(), request.getStatus());
-    }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    TicketEntity toEntity(CreateTicketRequest request);
 }

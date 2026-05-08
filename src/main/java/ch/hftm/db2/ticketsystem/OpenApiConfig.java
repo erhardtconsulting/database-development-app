@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
         info = @Info(
                 title = "DB-2 Ticket System API",
                 version = "0.1.0",
-                description = "Spring-Boot-Starterprojekt für DB-2 mit bewusst offenen Guided Gaps in der Datenbanklogik."
+                description = "Spring-Boot-Projekt für DB-2"
         )
 )
 class OpenApiConfig {

@@ -3,10 +3,11 @@ package ch.hftm.db2.ticketsystem.ticket;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 
 class TicketMapperTest {
 
-    private final TicketMapper mapper = new TicketMapper();
+    private final TicketMapper mapper = Mappers.getMapper(TicketMapper.class);
 
     @Test
     void mapsCreateRequestToEntity() {

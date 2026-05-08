@@ -13,7 +13,13 @@ Analysiere `V1__starter_ticket_schema.sql`.
 
 ## Aufgabe 2: Datenbanklogik ergaenzen
 
-Verbessere die Migration so, dass PostgreSQL mindestens Folgendes garantiert:
+Erstelle eine neue Migration:
+
+```text
+src/main/resources/db/migration/V2__enforce_ticket_rules.sql
+```
+
+Aendere `V1__starter_ticket_schema.sql` nicht. `V1` bleibt der bewusst schwache Ausgangszustand. Die neue `V2` soll PostgreSQL mindestens Folgendes garantieren:
 
 - ein Ticket hat immer einen Titel
 - ein Ticket hat immer einen Status
@@ -33,4 +39,3 @@ Analysiere den Datenfluss fuer `GET /api/tickets?status=open`.
 - Welche Methode erzeugt die Datenbankabfrage?
 - Welche Rolle hat der Service?
 - Warum ist die Repository Method fuer diesen Fall noch lesbar?
-

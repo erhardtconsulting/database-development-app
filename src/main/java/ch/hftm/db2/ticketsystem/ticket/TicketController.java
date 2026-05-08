@@ -31,7 +31,7 @@ class TicketController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Ticket erstellen", description = "Erstellt ein minimales Ticket im Starter-Schema app_starter.")
+    @Operation(summary = "Ticket erstellen", description = "Erstellt ein Ticket.")
     TicketResponse createTicket(@Valid @RequestBody CreateTicketRequest request) {
         return ticketService.createTicket(request);
     }

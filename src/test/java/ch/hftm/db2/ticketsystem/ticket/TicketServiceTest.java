@@ -8,11 +8,13 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 
 class TicketServiceTest {
 
     private final TicketRepository ticketRepository = mock(TicketRepository.class);
-    private final TicketService ticketService = new TicketService(ticketRepository, new TicketMapper());
+    private final TicketMapper ticketMapper = Mappers.getMapper(TicketMapper.class);
+    private final TicketService ticketService = new TicketService(ticketRepository, ticketMapper);
 
     @Test
     void usesStatusRepositoryMethodWhenStatusFilterIsPresent() {
@@ -36,4 +38,3 @@ class TicketServiceTest {
         assertThat(ticket.status()).isEqualTo("open");
     }
 }
-

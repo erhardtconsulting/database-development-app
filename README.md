@@ -77,7 +77,15 @@ Die aktivierbare Engineering-Aufgabe läuft mit:
 ./mvnw -Pguided-gaps test
 ```
 
-Dieser Test schlägt am Anfang erwartbar fehl. Er wird erst grün, wenn die Migration datenbankseitige Regeln enthält.
+Dieser Test schlägt am Anfang erwartbar fehl. Er wird erst grün, wenn eine neue Migration datenbankseitige Regeln enthält.
+
+Die Lösung wird nicht in `V1__starter_ticket_schema.sql` eingetragen. `V1` bleibt der dokumentierte Startzustand. Studierende schreiben stattdessen eine neue Migration, zum Beispiel:
+
+```text
+src/main/resources/db/migration/V2__enforce_ticket_rules.sql
+```
+
+Diese `V2` ergänzt Pflichtfelder und einen Status-Constraint für die Ticket-Tabelle.
 
 ## Teststrategie
 
