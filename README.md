@@ -96,6 +96,15 @@ podman compose up --build
 
 Danach ist die API unter `http://localhost:8080/api/tickets` erreichbar.
 
+## GitHub Actions und Container Registry
+
+Das Repository enthält einen GitHub-Actions-Workflow für die App:
+
+- Pull Requests führen `./mvnw test`, `./mvnw -Ptestcontainers test` und einen Docker-Build ohne Push aus.
+- Pushes auf `main` führen dieselben Prüfungen aus und veröffentlichen das Image in der GitHub Container Registry.
+- Das veröffentlichte Image heisst `ghcr.io/erhardtconsulting/database-development-app`.
+- `latest` wird nur von `main` gesetzt; zusätzlich erhält jedes Image einen Versions- und Commit-Tag.
+
 ## Swagger und OpenAPI
 
 Die API-Dokumentation ist in der laufenden Anwendung verfügbar:
