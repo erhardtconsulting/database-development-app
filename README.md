@@ -1,6 +1,6 @@
 # DB-2 Ticket System Starter
 
-Dieses Projekt ist das kleine Spring-Boot-Starterprojekt fuer **Database Development**. Es ist bewusst kein fertiges Ticket-System. Die Anwendung zeigt die Layer-Struktur, laeuft gegen PostgreSQL und enthaelt gezielte Luecken, damit die Datenbanklogik im Unterricht selbst entwickelt wird.
+Dieses Projekt ist das kleine Spring-Boot-Starterprojekt für **Database Development**. Es ist bewusst kein fertiges Ticket-System. Die Anwendung zeigt die Layer-Struktur, läuft gegen PostgreSQL und enthält gezielte Lücken, damit die Datenbanklogik im Unterricht selbst entwickelt wird.
 
 ## Technischer Rahmen
 
@@ -10,24 +10,25 @@ Dieses Projekt ist das kleine Spring-Boot-Starterprojekt fuer **Database Develop
 - Flyway
 - PostgreSQL
 - Maven Wrapper
-- Lombok fuer DTOs, Entities und einfache Datenklassen
+- Lombok für DTOs, Entities und einfache Datenklassen
+- Swagger UI und OpenAPI über springdoc-openapi
 
 ## Code-Guidelines
 
 - Verwende in diesem Kursprojekt **keine Java Records**.
-- Verwende fuer einfache Datenklassen Lombok:
-  - `@Value` fuer unveraenderliche Antwort-DTOs und Value-Objekte
-  - `@Data` fuer JPA Entities, Request-DTOs und mutable Framework-Modelle
+- Verwende für einfache Datenklassen Lombok:
+  - `@Value` für unveränderliche Antwort-DTOs und Value-Objekte
+  - `@Data` für JPA Entities, Request-DTOs und mutable Framework-Modelle
 - Nutze Maven als Build-Werkzeug; der Maven Wrapper ist Teil des Projekts.
 - Schreibe modernen Java-24-Code. Nutze Streams dort, wo sie Lesbarkeit und Datenfluss verbessern, aber nicht als Selbstzweck.
-- Datenbankregeln gehoeren nicht nur in Java-Validierung. Zentrale Invarianten muessen auch in PostgreSQL sichtbar sein.
+- Datenbankregeln gehören nicht nur in Java-Validierung. Zentrale Invarianten müssen auch in PostgreSQL sichtbar sein.
 
 ## Start
 
 Die DB-2-PostgreSQL-Umgebung muss laufen:
 
 ```bash
-cd ../../postgres
+cd ../db-2/postgres
 podman compose up -d
 ```
 
@@ -37,16 +38,16 @@ Danach kann die Anwendung gestartet werden:
 ./mvnw spring-boot:run
 ```
 
-Die Anwendung verwendet die Datenbank `ticket_system` auf Port `5433`, schreibt aber in ein eigenes Schema `app_starter`. Dadurch bleibt das vollstaendige Unterrichtsschema aus `db-2/postgres` als Referenz erhalten.
+Die Anwendung verwendet die Datenbank `ticket_system` auf Port `5433`, schreibt aber in ein eigenes Schema `app_starter`. Dadurch bleibt das vollständige Unterrichtsschema aus `db-2/postgres` als Referenz erhalten.
 
 ## Guided Gaps
 
-Die erste Migration ist absichtlich schwach. Sie laesst Dinge offen, die Studierende fachlich entscheiden sollen:
+Die erste Migration ist absichtlich schwach. Sie lässt Dinge offen, die Studierende fachlich entscheiden sollen:
 
 - Welche Felder braucht ein minimales Ticket wirklich?
-- Welche Spalten duerfen nie `NULL` sein?
-- Welche Statuswerte gehoeren als `CHECK` Constraint in die Datenbank?
-- Welche Regeln gehoeren in PostgreSQL, welche in den Service-Layer?
+- Welche Spalten dürfen nie `NULL` sein?
+- Welche Statuswerte gehören als `CHECK` Constraint in die Datenbank?
+- Welche Regeln gehören in PostgreSQL, welche in den Service-Layer?
 - Welche Repository-Methode bleibt lesbar?
 
 Normale Tests laufen mit:
@@ -61,29 +62,29 @@ Ein Integrationstest mit Testcontainers startet eine frische PostgreSQL-Datenban
 ./mvnw -Ptestcontainers test
 ```
 
-Ein Docker-Compose-Test gegen die lokale DB-2-PostgreSQL-Umgebung laeuft mit:
+Ein Docker-Compose-Test gegen die lokale DB-2-PostgreSQL-Umgebung läuft mit:
 
 ```bash
-cd ../../postgres
+cd ../db-2/postgres
 podman compose up -d
-cd ../app/ticket-system-java
+cd ../../db-2-app
 ./mvnw -Pdocker-compose test
 ```
 
-Die aktivierbare Engineering-Aufgabe laeuft mit:
+Die aktivierbare Engineering-Aufgabe läuft mit:
 
 ```bash
 ./mvnw -Pguided-gaps test
 ```
 
-Dieser Test schlaegt am Anfang erwartbar fehl. Er wird erst gruen, wenn die Migration datenbankseitige Regeln enthaelt.
+Dieser Test schlägt am Anfang erwartbar fehl. Er wird erst grün, wenn die Migration datenbankseitige Regeln enthält.
 
 ## Teststrategie
 
 - `./mvnw test`: schnelle Tests ohne Docker.
 - `./mvnw -Ptestcontainers test`: echte PostgreSQL-Integration mit isolierter Testcontainers-Datenbank.
-- `./mvnw -Pdocker-compose test`: Pruefung gegen die Kursdatenbank aus `db-2/postgres/docker-compose.yml`.
-- `./mvnw -Pguided-gaps test`: bewusst fehlschlagende Engineering-Aufgabe fuer fehlende Datenbankregeln.
+- `./mvnw -Pdocker-compose test`: Prüfung gegen die Kursdatenbank aus `db-2/postgres/docker-compose.yml`.
+- `./mvnw -Pguided-gaps test`: bewusst fehlschlagende Engineering-Aufgabe für fehlende Datenbankregeln.
 
 ## Docker
 
@@ -95,7 +96,15 @@ podman compose up --build
 
 Danach ist die API unter `http://localhost:8080/api/tickets` erreichbar.
 
-## API fuer Block 2
+## Swagger und OpenAPI
+
+Die API-Dokumentation ist in der laufenden Anwendung verfügbar:
+
+- Root: `http://localhost:8080/` leitet auf Swagger UI weiter.
+- Swagger UI: `http://localhost:8080/swagger-ui.html`
+- OpenAPI JSON: `http://localhost:8080/v3/api-docs`
+
+## API für Block 2
 
 ```http
 GET /api/tickets
@@ -103,11 +112,11 @@ GET /api/tickets?status=open
 POST /api/tickets
 ```
 
-Beispiel fuer `POST /api/tickets`:
+Beispiel für `POST /api/tickets`:
 
 ```json
 {
-  "title": "Datenbankverbindung pruefen",
+  "title": "Datenbankverbindung prüfen",
   "status": "open"
 }
 ```

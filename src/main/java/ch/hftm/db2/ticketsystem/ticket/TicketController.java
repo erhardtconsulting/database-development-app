@@ -1,18 +1,17 @@
 package ch.hftm.db2.ticketsystem.ticket;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.List;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/tickets")
+@Tag(name = "Tickets", description = "Ticket Controller")
 class TicketController {
 
     private final TicketService ticketService;
@@ -22,14 +21,18 @@ class TicketController {
     }
 
     @GetMapping
-    List<TicketResponse> findTickets(@RequestParam(required = false) String status) {
+    @Operation(summary = "Tickets lesen", description = "Liest alle Tickets oder filtert nach einem Status.")
+    List<TicketResponse> findTickets(
+            @Parameter(description = "Optionaler Statusfilter, zum Beispiel open")
+            @RequestParam(required = false) String status
+    ) {
         return ticketService.findTickets(status);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Ticket erstellen", description = "Erstellt ein minimales Ticket im Starter-Schema app_starter.")
     TicketResponse createTicket(@Valid @RequestBody CreateTicketRequest request) {
         return ticketService.createTicket(request);
     }
 }
-

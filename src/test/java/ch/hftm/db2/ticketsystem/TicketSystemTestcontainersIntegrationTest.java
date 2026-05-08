@@ -22,7 +22,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 class TicketSystemTestcontainersIntegrationTest {
 
     @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine")
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17")
             .withDatabaseName("ticket_system")
             .withUsername("ticket_user")
             .withPassword("ticket_user");
@@ -69,5 +69,52 @@ class TicketSystemTestcontainersIntegrationTest {
         assertThat(postResponse.statusCode()).isEqualTo(201);
         assertThat(postResponse.body()).contains("Testcontainers pruefen", "open");
     }
-}
 
+    @Test
+    void exposesSwaggerUiAndOpenApiDescription() throws Exception {
+        HttpClient redirectClient = HttpClient.newBuilder()
+                .followRedirects(HttpClient.Redirect.NEVER)
+                .build();
+        HttpClient client = HttpClient.newBuilder()
+                .followRedirects(HttpClient.Redirect.NORMAL)
+                .build();
+
+        HttpResponse<String> rootResponse = redirectClient.send(
+                HttpRequest.newBuilder()
+                        .uri(URI.create("http://127.0.0.1:" + port + "/"))
+                        .GET()
+                        .build(),
+                HttpResponse.BodyHandlers.ofString()
+        );
+
+        assertThat(rootResponse.statusCode()).isBetween(300, 399);
+        assertThat(rootResponse.headers().firstValue("Location"))
+                .hasValueSatisfying(location -> assertThat(location).endsWith("/swagger-ui.html"));
+
+        HttpResponse<String> swaggerResponse = client.send(
+                HttpRequest.newBuilder()
+                        .uri(URI.create("http://127.0.0.1:" + port + "/swagger-ui.html"))
+                        .GET()
+                        .build(),
+                HttpResponse.BodyHandlers.ofString()
+        );
+
+        assertThat(swaggerResponse.statusCode()).isEqualTo(200);
+        assertThat(swaggerResponse.body()).contains("Swagger UI");
+
+        HttpResponse<String> openApiResponse = client.send(
+                HttpRequest.newBuilder()
+                        .uri(URI.create("http://127.0.0.1:" + port + "/v3/api-docs"))
+                        .GET()
+                        .build(),
+                HttpResponse.BodyHandlers.ofString()
+        );
+
+        assertThat(openApiResponse.statusCode()).isEqualTo(200);
+        assertThat(openApiResponse.body()).contains(
+                "DB-2 Ticket System API",
+                "/api/tickets",
+                "Tickets"
+        );
+    }
+}

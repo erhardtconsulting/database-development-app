@@ -1,9 +1,10 @@
 package ch.hftm.db2.ticketsystem.ticket;
 
-import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 @Service
 class TicketService {

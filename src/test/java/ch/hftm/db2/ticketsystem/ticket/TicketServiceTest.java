@@ -21,7 +21,7 @@ class TicketServiceTest {
 
         List<TicketResponse> tickets = ticketService.findTickets("open");
 
-        assertThat(tickets).extracting(TicketResponse::getTitle).containsExactly("VPN pruefen");
+        assertThat(tickets).extracting(TicketResponse::title).containsExactly("VPN pruefen");
         verify(ticketRepository).findByStatusOrderByCreatedAtDesc("open");
     }
 
@@ -32,8 +32,8 @@ class TicketServiceTest {
 
         TicketResponse ticket = ticketService.createTicket(new CreateTicketRequest("API pruefen", "open"));
 
-        assertThat(ticket.getTitle()).isEqualTo("API pruefen");
-        assertThat(ticket.getStatus()).isEqualTo("open");
+        assertThat(ticket.title()).isEqualTo("API pruefen");
+        assertThat(ticket.status()).isEqualTo("open");
     }
 }
 

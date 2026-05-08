@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: db2-ticket-system-starter
+  datasource:
+    url: jdbc:postgresql://localhost:5433/ticket_system
+    username: ticket_user
+    password: ticket_user
+  flyway:
+    default-schema: app_starter
+    schemas: app_starter
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: app_starter
+    open-in-view: false
+
+server:
+  port: 8080
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
